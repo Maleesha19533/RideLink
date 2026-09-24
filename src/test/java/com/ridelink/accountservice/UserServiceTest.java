@@ -257,4 +257,17 @@ public class UserServiceTest {
         // 6. Verify database save
         verify(userRepository, times(1)).save(user);
     }
+    @Test
+    void getUserByEmailWhenUserNotFound() {
+
+        // Pretend user does not exist
+        when(userRepository.findByEmail("unknown@gmail.com"))
+                .thenReturn(java.util.Optional.empty());
+
+        // UserNotFoundException must be thrown
+        assertThrows(
+                com.ridelink.accountservice.exception.UserNotFoundException.class,
+                () -> userService.getUserByEmail("unknown@gmail.com")
+        );
+    }
 }
