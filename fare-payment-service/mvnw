@@ -1,0 +1,49 @@
+#!/usr/bin/env sh
+# ----------------------------------------------------------------------------
+# Maven Wrapper
+# ----------------------------------------------------------------------------
+PRG="$0"
+progname=$(basename "$0")
+
+while [ -h "$PRG" ] ; do
+  ls=`ls -ld "$PRG"`
+  link=`expr "$ls" : '.*-> \(.*\)$'`
+  if expr "$link" : '/.*' > /dev/null; then
+    PRG="$link"
+  else
+    PRG=`dirname "$PRG"`"/"`expr "$link" : './\(.*\)$'`
+  fi
+done
+
+ROOT_DIR=`dirname "$PRG"`/.
+
+WRAPPER_DIR="$ROOT_DIR/.mvn/wrapper"
+WRAPPER_JAR="$WRAPPER_DIR/maven-wrapper.jar"
+
+if [ ! -f "$WRAPPER_JAR" ]; then
+  echo "Maven Wrapper JAR not found locally. Attempting to download..."
+  PROPS="$WRAPPER_DIR/maven-wrapper.properties"
+  if [ -f "$PROPS" ]; then
+    URL=$(sed -n 's/^wrapperUrl=//p' "$PROPS")
+    mkdir -p "$WRAPPER_DIR"
+    echo "Downloading wrapper jar from $URL"
+    if command -v curl >/dev/null 2>&1; then
+      curl -fsSL -o "$WRAPPER_JAR" "$URL" || { echo "Failed to download wrapper jar"; exit 1; }
+    elif command -v wget >/dev/null 2>&1; then
+      wget -q -O "$WRAPPER_JAR" "$URL" || { echo "Failed to download wrapper jar"; exit 1; }
+    else
+      echo "Neither curl nor wget available to download wrapper jar. Please run 'mvn -v' or install Maven."
+      exit 1
+    fi
+  else
+    echo "maven-wrapper.properties not found; cannot download wrapper jar."
+    exit 1
+  fi
+fi
+
+JAVA_CMD=${JAVA_HOME:+"$JAVA_HOME/bin/java"}
+if [ -z "$JAVA_CMD" ]; then
+  JAVA_CMD=java
+fi
+
+exec "$JAVA_CMD" -jar "$WRAPPER_JAR" "$@"

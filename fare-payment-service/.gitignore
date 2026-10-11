@@ -1,0 +1,30 @@
+# Ignore IDE files
+/.idea/
+*.iml
+
+# Maven target
+/target/
+
+# Environment variables and local .env files
+.env
+.env.*
+# ...but keep the template with fake values
+!.env.example
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Local IntelliJ run configs
+*.iws
+
+# Maven Wrapper (committed to repo)
+# do NOT ignore mvnw or mvnw.cmd; keep the wrapper scripts in source control
+
+# Never commit database passwords or other secrets
+secrets.properties
+
+# Log files (e.g. run.log) - never commit these
+*.log
+
+src/main/resources/application.properties
